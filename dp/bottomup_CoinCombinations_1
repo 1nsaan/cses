@@ -1,0 +1,103 @@
+// import java.io.*;
+//still throws tle !! 
+import java.math.BigInteger;
+import java.util.*;
+import static java.lang.Math.*;
+import java.io.BufferedReader; 
+import java.io.IOException; 
+import java.io.InputStreamReader; 
+import java.util.Scanner; 
+import java.util.StringTokenizer; 
+ 
+public class Solution implements Runnable{
+	static class FastReader { 
+		BufferedReader br; 
+		StringTokenizer st; 
+
+		public FastReader() 
+		{ 
+			br = new BufferedReader( 
+				new InputStreamReader(System.in)); 
+		} 
+
+		String next() 
+		{ 
+			while (st == null || !st.hasMoreElements()) { 
+				try { 
+					st = new StringTokenizer(br.readLine()); 
+				} 
+				catch (IOException e) { 
+					e.printStackTrace(); 
+				} 
+			} 
+			return st.nextToken(); 
+		} 
+
+		int nextInt() { return Integer.parseInt(next()); } 
+
+		long nextLong() { return Long.parseLong(next()); } 
+
+		double nextDouble() 
+		{ 
+			return Double.parseDouble(next()); 
+		} 
+
+		String nextLine() 
+		{ 
+			String str = ""; 
+			try { 
+				if(st.hasMoreTokens()){ 
+					str = st.nextToken("\n"); 
+				} 
+				else{ 
+					str = br.readLine(); 
+				} 
+			} 
+			catch (IOException e) { 
+				e.printStackTrace(); 
+			} 
+			return str; 
+		} 
+	} 
+
+	
+
+
+	static long dp[];
+    static int coins[];
+    static long m = (long) 1e9+7;
+	public static void main(String[] args) {
+		new Thread(null, new Solution(), "", 256 * (1L << 20)).start();
+	}
+    
+    public void run(){
+	    FastReader sc = new FastReader();
+		int n = sc.nextInt();
+		int amount = sc.nextInt();
+		coins=new int[n];
+		for(int i=0;i<n;i++){
+			coins[i]= sc.nextInt();
+		}
+		dp = new long[amount+1];
+        helper(amount);
+		System.out.println(dp[amount]);
+	}
+    //topdown
+	static long helper(int amount){
+     // dp[i]= distinct ways to create amount i
+    dp[0]=1;
+    for(int i=1;i<amount+1;i++){
+        for(int j =0;j<coins.length;j++){
+            if(i-coins[j] >= 0){
+                 dp[i]= (long)((dp[i] % m ) + dp[i-coins[j]] % m) % m;
+            }
+        }
+    }
+    return dp[amount];
+} 
+    
+    
+    
+
+    
+}
